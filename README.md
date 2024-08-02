@@ -1,1 +1,1 @@
-# Project1
+# Dino Runner
