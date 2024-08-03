@@ -12,7 +12,7 @@ int obstacle::obstacle_x(int last_x)
 	int obstacle_x = 0;
 	//srand((unsigned)time(NULL));
 	//obstacle_x = 750 + (rand() % 500);
-	obstacle_x = last_x - 100; 
+	obstacle_x = (last_x / 1.05); //last_x - 100
 	cout << "The obstacle x is" << obstacle_x << endl;
 	return obstacle_x;
 }

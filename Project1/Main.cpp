@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <cstdlib>
+#include<fstream>
 #include "Player.h"
 #include "Obstacle.h"
 
@@ -29,11 +30,15 @@ bool obstacle2_clear = true;
 
 void main_menu();
 void PlayGame(SDL_Renderer* render, SDL_Window* window);
+string highscore();
 void text(SDL_Color Colour, SDL_Renderer* text_render, int x, int y, string text);
 bool checkCollision(SDL_Rect a, SDL_Rect b);
+void compare(int score);
 
 int main(int argc, char* argv[])
 {
+	ofstream MyFile("HighScore.txt");
+	MyFile.close();
 	main_menu();
 	return 0;
 }
@@ -76,10 +81,17 @@ void main_menu()
 	text(Black, render, 615, 625, "START");
 	text(Black, render, 400, 300, "HIGH SCORE:");
 	//Need to access external text file and access the high score and then display it next to the above text
+	string high_score = highscore();
+	stringstream hs; 
+	hs << high_score;
+	text(Black, render, 500, 300, hs.str().c_str());
 
 	if (played_game == true)
 	{
 		text(Black, render, 400, 400, "SCORE:");
+		stringstream endscore;
+		endscore << score;
+		text(Black, render, 500, 400, endscore.str().c_str());
 		//Code to display recently achieved score here
 	}
 
@@ -139,6 +151,12 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 	bool obstacle2_clear = true;
 	bool obstacle3_clear = true;
 	bool obstacle4_clear = true;
+	//Limit Jump Height 
+	int limitjump = 475 ; 
+	bool jump = false;
+	//Limit Duck Height
+	int limitduck = 625 ;
+	bool duck = false;
 
 	//Creation of Floor Rectangle/Surface (Positioned on screen)
 	SDL_Rect Floor; 
@@ -227,6 +245,14 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			cout << "Point Reached";
 		}
 
+		//if ((Player.y > limitjump) && (jump == true)) 
+		//{
+		//	Player.y = limitjump;
+		//}
+		//if ((Player.y < limitduck) && (duck == true)) 
+		//{
+		//	Player.y = limitduck;
+		//}
 		//Move the floor rect which isnt on screen to the left of the screen 
 		if (Floor.x < -1249)
 		{
@@ -371,8 +397,16 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 		if (Player_xvel >= 1) //Basic but works, may change this so it uses time
 		{
 			Player_xvel == 1; //Keep x velocity at 1 
+			if (score > 700)
+			{
+				Player_xvel == 2; 
+			}
+			if (score > 1400)
+			{
+				Player_xvel == 3; 
+			}
 			int count = 1000; 
-			for (int i = 0; i < count; i++) //Acts as a count for two seconds 
+			for (int i = 0; i < count; i++) 
 			{
 				cout << "i num" << i << endl;//Keep this, makes the movement slow...
 			}
@@ -453,6 +487,7 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			//Moving up and down (for the time being), this will become jumping and ducking in the future
 			else if (event.type == SDL_KEYDOWN)
 			{
+				
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_UP:
@@ -460,14 +495,26 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 					Player_yvel -= 100;
 					//cout << Player_yvel << endl;
 					//cout << Player.y;
+					//jump = true;
+					if (Player.y < limitjump)
+					{
+						Player_yvel = 0;
+						jump = true;
+					}
+
 					break;
 
 				case SDLK_DOWN:
 					//cout << "down/duck" << endl;
 					Player_yvel += 100;
 					//cout << Player.y;
+					if (Player.y > limitduck)
+					{
+						Player_yvel = 0; 
+						duck = true;
+					}
 					break;
-				
+
 				}
 				Player.y += Player_yvel;
 				Player.x += Player_xvel;
@@ -521,16 +568,31 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 				{
 				case SDLK_UP:
 					//cout << "up/jump" << endl; 
-					Player_yvel += 100;
+					if (jump == false)
+					{
+						Player_yvel += 100;
+					}
 					//cout << Player_yvel << endl; 
 					//cout << "PLayer Y" << Player.y << endl;
+					Player.y = 550; //Brings Player Back Down
+					jump = false;
 					break;
+
 				case SDLK_DOWN:
 					//cout << "down/duck" << endl;
-					Player_yvel -= 100;
-					//cout << Player.y << endl; ;
+					if (duck == false)
+					{
+						Player_yvel -= 100;
+					}
+					//cout << Player.y << endl;
+					Player.y = 550; //Brings Player Back Down 
+					duck = false; 
 					break;
 				}
+			}
+			if (Player.x > Screen_Width - 650)
+			{
+				Player.x = Screen_Width - 650;
 			}
 
 		}
@@ -600,6 +662,32 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 
 	//If there has been a collision 
 	return true; 
+
+
+}
+
+string highscore()
+{
+	fstream MyFile("HighScore.txt");
+	string highscore;
+	getline(MyFile, highscore);
+	MyFile.close();
+	return highscore;
+}
+
+void compare(int score)
+{
+	fstream MyFile("HighScore.txt");
+	string highscore;
+	getline(MyFile, highscore);
+	int hs = stoi(highscore);
+	if (score > hs)
+	{
+		hs = score; 
+		MyFile << hs; 
+
+	}
+
 
 
 }
