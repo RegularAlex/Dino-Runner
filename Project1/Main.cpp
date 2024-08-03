@@ -590,7 +590,7 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 					break;
 				}
 			}
-			if (Player.x > Screen_Width - 650)
+			if (Player.x > Screen_Width - 650)//
 			{
 				Player.x = Screen_Width - 650;
 			}
