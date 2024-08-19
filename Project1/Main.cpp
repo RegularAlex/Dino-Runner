@@ -183,7 +183,7 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 	SDL_Surface* airobss2 = IMG_Load("bunchbirds2.1.png"); //Flying
 	SDL_Texture* airobst2 = SDL_CreateTextureFromSurface(render, airobss2);
 
-	//Creation of Floor Rectangle/Surface (Positioned on screen)
+	//Creation of Floor Rectangle/Surface(Positioned on screen) 
 	SDL_Rect Floor;
 	Floor.x = 0;
 	Floor.y = 600;
