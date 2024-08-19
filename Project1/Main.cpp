@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <SDL_ttf.h> 
+#include <SDL_image.h>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -10,6 +11,7 @@
 
 using namespace std;
 
+//Variables
 int score = 0;
 double Player_xvel = 0;
 double Player_yvel = 0;
@@ -24,6 +26,7 @@ bool obstacle2_active = false;
 bool obstacle1_clear = true;
 bool obstacle2_clear = true;
 
+//Function Definitions
 void main_menu();
 void PlayGame(SDL_Renderer* render, SDL_Window* window);
 string highscore();
@@ -44,6 +47,7 @@ void main_menu()
 	//Initalisation of SDL and SDL_TTF
 	SDL_Init(SDL_INIT_EVERYTHING);
 	TTF_Init();
+	IMG_Init;
 
 	//Creation of a Window 
 	SDL_Window* window;
@@ -155,6 +159,29 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 	//Limit Duck Height
 	int limitduck = 625;
 	bool duck = false;
+	//Player Phase
+	int phase = 1; 
+
+	//Images
+	//Player
+	SDL_Surface* dinoruns = IMG_Load("DinoRunning1.1.png");
+	SDL_Texture* dinorunt = SDL_CreateTextureFromSurface(render,dinoruns);
+
+	SDL_Surface* dinoruns2 = IMG_Load("DinoRunning2.1.png");
+	SDL_Texture* dinorunt2 = SDL_CreateTextureFromSurface(render, dinoruns2);
+
+	//Obstacles 
+	SDL_Surface* groundobss = IMG_Load("cactus.jpg"); //Ground
+	SDL_Texture* groundobst = SDL_CreateTextureFromSurface(render, groundobss);
+
+	SDL_Surface* airobss = IMG_Load("bunchbirds.png"); //Flying
+	SDL_Texture* airobst = SDL_CreateTextureFromSurface(render, airobss);
+
+	SDL_Surface* groundobss2 = IMG_Load("cactus2.jpg"); //Ground
+	SDL_Texture* groundobst2 = SDL_CreateTextureFromSurface(render, groundobss2);
+
+	SDL_Surface* airobss2 = IMG_Load("bunchbirds2.png"); //Flying
+	SDL_Texture* airobst2 = SDL_CreateTextureFromSurface(render, airobss2);
 
 	//Creation of Floor Rectangle/Surface (Positioned on screen)
 	SDL_Rect Floor;
@@ -182,6 +209,9 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 	obs.y = ground.obstacle_y(type);
 	obs.w = ground.obstacle_width(type);
 	obs.h = ground.obstacle_height(type);
+	//Assign Image to Obstacle?
+	SDL_RenderCopy(render, groundobst, NULL, &obs);
+	SDL_FreeSurface(groundobss);
 
 	//Obstacle 2
 	type = 2;
@@ -191,6 +221,9 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 	obs2.y = air.obstacle_y(type);
 	obs2.w = air.obstacle_width(type);
 	obs2.h = air.obstacle_height(type);
+	//Assign Image to Obstacle?
+	SDL_RenderCopy(render, airobst, NULL, &obs2);
+	SDL_FreeSurface(airobss);
 
 	//Obstacle 3
 	type = 1;
@@ -200,6 +233,8 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 	obs3.y = ground1.obstacle_y(type);
 	obs3.w = ground1.obstacle_width(type);
 	obs3.h = ground1.obstacle_height(type);
+	SDL_RenderCopy(render, groundobst2, NULL, &obs3);
+	SDL_FreeSurface(groundobss2);
 
 	//Obstacle 4 
 	type = 2;
@@ -209,6 +244,8 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 	obs4.y = air1.obstacle_y(type);
 	obs4.w = air1.obstacle_width(type);
 	obs4.h = air1.obstacle_height(type);
+	SDL_RenderCopy(render, airobst2, NULL, &obs4);
+	SDL_FreeSurface(airobss2);
 
 	int last_x = 2800;
 
@@ -375,6 +412,104 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			last_x = last_x + 150;
 		}
 
+		//Player Character Image being updated between the two images (makes the character look like they are running). 
+		if (phase == 1)
+		{
+			//Having to redraw everything. 
+			SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
+			SDL_RenderClear(render);
+			SDL_RenderPresent(render);
+			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+			SDL_RenderFillRect(render, &Floor);
+			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+			SDL_RenderFillRect(render, &Floor2);
+			SDL_RenderCopy(render, dinorunt, NULL, &Player);
+			SDL_RenderPresent(render);
+			phase += 1;
+			if (obstacle1_active == true)
+			{
+				//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+				//SDL_RenderFillRect(render, &obs);
+				SDL_RenderCopy(render, groundobst, NULL, &obs);
+				SDL_RenderPresent(render);
+			}
+			if (obstacle2_active == true)
+			{
+				//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+				//SDL_RenderFillRect(render, &obs2);
+				SDL_RenderCopy(render, airobst, NULL, &obs2);
+				SDL_RenderPresent(render);
+			}
+			if (obstacle3_active == true)
+			{
+				//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+				//SDL_RenderFillRect(render, &obs3);
+				SDL_RenderCopy(render, groundobst2, NULL, &obs3);
+				SDL_RenderPresent(render);
+			}
+			if (obstacle4_active == true)
+			{
+				//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+				//SDL_RenderFillRect(render, &obs4);
+				SDL_RenderCopy(render, airobst2, NULL, &obs4);
+				SDL_RenderPresent(render);
+			}
+			text(Black, render, 0, 0, "Score:");
+			stringstream updatedscore;
+			updatedscore << score;
+			text(Black, render, 100, 0, updatedscore.str().c_str());
+			SDL_RenderPresent(render);
+			SDL_RenderClear(render);
+			
+		}
+		else if (phase == 2)
+		{
+			SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
+			SDL_RenderClear(render);
+			SDL_RenderPresent(render);
+			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+			SDL_RenderFillRect(render, &Floor);
+			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+			SDL_RenderFillRect(render, &Floor2);
+			SDL_RenderCopy(render, dinorunt2, NULL, &Player);
+			SDL_RenderPresent(render);
+			phase -= 1;
+			if (obstacle1_active == true)
+			{
+				//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+				//SDL_RenderFillRect(render, &obs);
+				SDL_RenderCopy(render, groundobst, NULL, &obs);
+				SDL_RenderPresent(render);
+			}
+			if (obstacle2_active == true)
+			{
+				//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+				//SDL_RenderFillRect(render, &obs2);
+				SDL_RenderCopy(render, airobst, NULL, &obs2);
+				SDL_RenderPresent(render);
+			}
+			if (obstacle3_active == true)
+			{
+				//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+				//SDL_RenderFillRect(render, &obs3);
+				SDL_RenderCopy(render, groundobst2, NULL, &obs3);
+				SDL_RenderPresent(render);
+			}
+			if (obstacle4_active == true)
+			{
+				//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+				//SDL_RenderFillRect(render, &obs4);
+				SDL_RenderCopy(render, airobst2, NULL, &obs4);
+				SDL_RenderPresent(render);
+			}
+			text(Black, render, 0, 0, "Score:");
+			stringstream updatedscore;
+			updatedscore << score;
+			text(Black, render, 100, 0, updatedscore.str().c_str());
+			SDL_RenderPresent(render);
+			SDL_RenderClear(render);
+		}
+
 		//Making sure that speed is limited to 1 (most likely to change)
 		if (Player_xvel >= 1) //Basic but works, may change this so it uses time
 		{
@@ -405,27 +540,38 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			SDL_RenderFillRect(render, &Floor);
 			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
 			SDL_RenderFillRect(render, &Floor2);
-			SDL_SetRenderDrawColor(render, 255, 255, 0, 255);
-			SDL_RenderFillRect(render, &Player);
+			//Player ... 
+			//SDL_SetRenderDrawColor(render, 255, 255, 0, 255);
+			//SDL_RenderFillRect(render, &Player);
+			SDL_RenderPresent(render);
+
 			if (obstacle1_active == true) //seems to be false
 			{
-				SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
-				SDL_RenderFillRect(render, &obs);
+				//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+				//SDL_RenderFillRect(render, &obs);
+				SDL_RenderCopy(render, groundobst, NULL, &obs);
+				SDL_RenderPresent(render);
 			}
 			if (obstacle2_active == true)
 			{
-				SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
-				SDL_RenderFillRect(render, &obs2);
+				//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+				//SDL_RenderFillRect(render, &obs2);
+				SDL_RenderCopy(render, airobst, NULL, &obs2);
+				SDL_RenderPresent(render);
 			}
 			if (obstacle3_active == true)
 			{
-				SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
-				SDL_RenderFillRect(render, &obs3);
+				//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+				//SDL_RenderFillRect(render, &obs3);
+				SDL_RenderCopy(render, groundobst2, NULL, &obs3);
+				SDL_RenderPresent(render);
 			}
 			if (obstacle4_active == true)
 			{
-				SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
-				SDL_RenderFillRect(render, &obs4);
+				//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+				//SDL_RenderFillRect(render, &obs4);
+				SDL_RenderCopy(render, airobst2, NULL, &obs4);
+				SDL_RenderPresent(render);
 			}
 			SDL_RenderPresent(render);
 			text(Black, render, 0, 0, "Score:");
@@ -445,11 +591,19 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 		{
 			//cout << "GAME OVER" << endl; 
 			played_game = true;
-			main_menu();
-			//break;
-			SDL_DestroyWindow(window);
-			TTF_Quit();
-			SDL_Quit();
+			int count = 1;
+			while (count != 0) //Needed or the user is stuck in a main menu cycle which the score being updated. 
+			{
+				//Destroys the current screen
+				SDL_DestroyWindow(window);
+				TTF_Quit();
+				SDL_Quit();
+				//Creates a new one from the main menu
+				main_menu();
+				//Reduces count by 1, so the loop doesnt occur again
+				count == 0;
+				break;
+			}
 		}
 
 
@@ -501,28 +655,37 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 				SDL_RenderFillRect(render, &Floor);
 				SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
 				SDL_RenderFillRect(render, &Floor2);
-				SDL_SetRenderDrawColor(render, 255, 255, 0, 255);
-				SDL_RenderFillRect(render, &Player);
+				//Player ... 
+				//SDL_SetRenderDrawColor(render, 255, 255, 0, 255);
+				//SDL_RenderFillRect(render, &Player);
 				SDL_RenderPresent(render);
 				if (obstacle1_active == true)
 				{
-					SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
-					SDL_RenderFillRect(render, &obs);
+					//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+					//SDL_RenderFillRect(render, &obs);
+					SDL_RenderCopy(render, groundobst, NULL, &obs);
+					SDL_RenderPresent(render);
 				}
 				if (obstacle2_active == true)
 				{
-					SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
-					SDL_RenderFillRect(render, &obs2);
+					//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+					//SDL_RenderFillRect(render, &obs2);
+					SDL_RenderCopy(render, airobst, NULL, &obs2);
+					SDL_RenderPresent(render);
 				}
 				if (obstacle3_active == true)
 				{
-					SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
-					SDL_RenderFillRect(render, &obs3);
+					//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+					//SDL_RenderFillRect(render, &obs3);
+					SDL_RenderCopy(render, groundobst2, NULL, &obs3);
+					SDL_RenderPresent(render);
 				}
 				if (obstacle4_active == true)
 				{
-					SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
-					SDL_RenderFillRect(render, &obs4);
+					//SDL_SetRenderDrawColor(render, 111, 255, 111, 255);
+					//SDL_RenderFillRect(render, &obs4);
+					SDL_RenderCopy(render, airobst2, NULL, &obs4);
+					SDL_RenderPresent(render);
 				}
 				text(Black, render, 0, 0, "Score:");
 				stringstream updatedscore;
@@ -634,6 +797,7 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 
 }
 
+//To Do... Sort out this section with the external file.
 string highscore()
 {
 	fstream MyFile("HighScore.txt");

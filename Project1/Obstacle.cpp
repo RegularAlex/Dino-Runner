@@ -44,7 +44,7 @@ int obstacle::obstacle_width(int type)
 	if (type == 1)
 	{
 		//Ground Obstacle Code
-		obstacle_width = 25;
+		obstacle_width = 50;
 		cout << "Obstacle Width is" << obstacle_width << endl;
 		return obstacle_width;
 	}
