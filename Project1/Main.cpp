@@ -171,16 +171,16 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 	SDL_Texture* dinorunt2 = SDL_CreateTextureFromSurface(render, dinoruns2);
 
 	//Obstacles 
-	SDL_Surface* groundobss = IMG_Load("cactus.jpg"); //Ground
+	SDL_Surface* groundobss = IMG_Load("cactus1.1.png"); //Ground
 	SDL_Texture* groundobst = SDL_CreateTextureFromSurface(render, groundobss);
 
-	SDL_Surface* airobss = IMG_Load("bunchbirds.png"); //Flying
+	SDL_Surface* airobss = IMG_Load("bunchbirds1.1.png"); //Flying
 	SDL_Texture* airobst = SDL_CreateTextureFromSurface(render, airobss);
 
-	SDL_Surface* groundobss2 = IMG_Load("cactus2.jpg"); //Ground
+	SDL_Surface* groundobss2 = IMG_Load("cactus2.1.png"); //Ground
 	SDL_Texture* groundobst2 = SDL_CreateTextureFromSurface(render, groundobss2);
 
-	SDL_Surface* airobss2 = IMG_Load("bunchbirds2.png"); //Flying
+	SDL_Surface* airobss2 = IMG_Load("bunchbirds2.1.png"); //Flying
 	SDL_Texture* airobst2 = SDL_CreateTextureFromSurface(render, airobss2);
 
 	//Creation of Floor Rectangle/Surface (Positioned on screen)
