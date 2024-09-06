@@ -202,10 +202,10 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 	Player.w = 50;
 	Player.h = 50;
 	//Obstacle 1
-	int type = 1; //Need to improve this, so a random value between 1 and 2 is called
+	int type = 1; //Type for the obstacle (There is two of each obstacle type, but they all have different images). 
 	obstacle ground;
 	SDL_Rect obs;
-	obs.x = 1800;
+	obs.x = 1700; //When altering score this value needs to be altered to (e.g., 1700 and 500/ 1800 and 600) by the same amount which the score is changed by.
 	obs.y = ground.obstacle_y(type);
 	obs.w = ground.obstacle_width(type);
 	obs.h = ground.obstacle_height(type);
@@ -247,11 +247,11 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 	SDL_RenderCopy(render, airobst2, NULL, &obs4);
 	SDL_FreeSurface(airobss2);
 
-	int last_x = 2800;
+	int last_x = 2700; //When altering score this value needs to be altered to (e.g., 2700 and 500/ 2800 and 600) by the same amount.
 
-	SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+	SDL_SetRenderDrawColor(render, 250, 213, 165, 255);
 	SDL_RenderFillRect(render, &Floor);
-	SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+	SDL_SetRenderDrawColor(render, 250, 213, 165, 255);
 	SDL_RenderFillRect(render, &Floor2);
 	SDL_SetRenderDrawColor(render, 255, 255, 0, 255);
 	SDL_RenderFillRect(render, &Player);
@@ -291,7 +291,7 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 		}
 
 		//Using Score to Start Spawning Obstacles, allowing the player character to get into the centre of the screen
-		if ((score >= 600) && (obstacle1_clear == true))
+		if ((score >= 500) && (obstacle1_clear == true)) //600
 		{
 			if (obstacle_count <= 4)
 			{
@@ -309,7 +309,7 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			}
 		}
 
-		if ((score >= 1200) && (obstacle2_clear == true))
+		if ((score >= 1100) && (obstacle2_clear == true)) //1200
 		{
 			if (obstacle_count <= 4)
 			{
@@ -327,7 +327,7 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			}
 		}
 
-		if ((score >= 1800) && (obstacle3_clear == true))
+		if ((score >= 1700) && (obstacle3_clear == true)) //1800
 		{
 			if (obstacle_count <= 4)
 			{
@@ -344,7 +344,7 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			}
 		}
 
-		if ((score >= 2100) && (obstacle4_clear == true))
+		if ((score >= 2000) && (obstacle4_clear == true)) //2100
 		{
 			if (obstacle_count <= 4)
 			{
@@ -419,9 +419,9 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
 			SDL_RenderClear(render);
 			SDL_RenderPresent(render);
-			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+			SDL_SetRenderDrawColor(render, 250, 213, 165, 255);
 			SDL_RenderFillRect(render, &Floor);
-			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+			SDL_SetRenderDrawColor(render, 250, 213, 165, 255);
 			SDL_RenderFillRect(render, &Floor2);
 			SDL_RenderCopy(render, dinorunt, NULL, &Player);
 			SDL_RenderPresent(render);
@@ -467,9 +467,9 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
 			SDL_RenderClear(render);
 			SDL_RenderPresent(render);
-			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+			SDL_SetRenderDrawColor(render, 250, 213, 165, 255);
 			SDL_RenderFillRect(render, &Floor);
-			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+			SDL_SetRenderDrawColor(render, 250, 213, 165, 255);
 			SDL_RenderFillRect(render, &Floor2);
 			SDL_RenderCopy(render, dinorunt2, NULL, &Player);
 			SDL_RenderPresent(render);
@@ -536,9 +536,9 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
 			SDL_RenderClear(render);
 			SDL_RenderPresent(render);
-			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+			SDL_SetRenderDrawColor(render, 250, 213, 165, 255);
 			SDL_RenderFillRect(render, &Floor);
-			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+			SDL_SetRenderDrawColor(render, 250, 213, 165, 255);
 			SDL_RenderFillRect(render, &Floor2);
 			//Player ... 
 			//SDL_SetRenderDrawColor(render, 255, 255, 0, 255);
@@ -651,9 +651,9 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 				SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
 				SDL_RenderClear(render);
 				SDL_RenderPresent(render);
-				SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+				SDL_SetRenderDrawColor(render, 250, 213, 165, 255);
 				SDL_RenderFillRect(render, &Floor);
-				SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+				SDL_SetRenderDrawColor(render, 250, 213, 165, 255);
 				SDL_RenderFillRect(render, &Floor2);
 				//Player ... 
 				//SDL_SetRenderDrawColor(render, 255, 255, 0, 255);
@@ -725,9 +725,7 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			{
 				Player.x = Screen_Width - 650;
 			}
-
 		}
-
 	}
 
 	SDL_DestroyWindow(window);
