@@ -13,6 +13,8 @@
 //Need to make it endless 
 // - Looping background and ground, infinity spawning obstacles (works, ground is looping one after another and the obstacles are randomly appearing)
 //Need to store the high score and display it on the front screen
-// - Saved in an external text file 
+// - Saved in an external text file (completed every score is stored in an external file and is then looped through too get the highest score)
 //After a playthrough return the user back the the main menu
 // - With it mostly being the same, the only difference is that the users score is displayed. (completed the players score is displayed on the main menu)
+
+//Error with stoi happens when there is a gap in the external file. 
