@@ -173,6 +173,8 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 	bool duck = false;
 	//Player Phase
 	int phase = 1; 
+	//Temp Values
+	int speedchange = 2100;
 
 	//Images
 	//Background 
@@ -568,6 +570,13 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			{
 				Player_xvel = 3;
 			}
+			if (score > speedchange + 700) //For continous speed increases. 
+			{
+				//Player_xvel += 1; //Increments player speed by 1
+				Player_xvel = Player_xvel + 1; 
+				speedchange = speedchange + 700; //Increaes the boundary by which the score needs to pass for the speed to increase
+			}
+
 			int count = 1000;
 			for (int i = 0; i < count; i++)
 			{
@@ -644,10 +653,11 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 				SDL_DestroyWindow(window);
 				TTF_Quit();
 				SDL_Quit();
+				active = false; 
 				//Creates a new one from the main menu
 				main_menu();
 				//Reduces count by 1, so the loop doesnt occur again
-				count == 0;
+				count = count - 1;
 				break;
 			}
 		}
