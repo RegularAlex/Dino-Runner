@@ -558,15 +558,15 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 		//Making sure that speed is limited to 1 (most likely to change)
 		if (Player_xvel >= 1) //Basic but works, may change this so it uses time
 		{
-			Player_xvel == 1; //Keep x velocity at 1
+			Player_xvel = 1; //Keep x velocity at 1
 			//Below Code of Changing speed does work, but need to change the == to =. As it causes a problem with the obstacles.
-			if (score > 700)
-			{
-				Player_xvel == 2;
-			}
 			if (score > 1400)
 			{
-				Player_xvel == 3;
+				Player_xvel = 2;
+			}
+			if (score > 2100)
+			{
+				Player_xvel = 3;
 			}
 			int count = 1000;
 			for (int i = 0; i < count; i++)
