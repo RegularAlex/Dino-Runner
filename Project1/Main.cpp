@@ -597,9 +597,6 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			SDL_RenderFillRect(render, &Floor);
 			SDL_SetRenderDrawColor(render, 250, 213, 165, 255);
 			SDL_RenderFillRect(render, &Floor2);
-			//Player ... 
-			//SDL_SetRenderDrawColor(render, 255, 255, 0, 255);
-			//SDL_RenderFillRect(render, &Player);
 			SDL_RenderPresent(render);
 
 			if (obstacle1_active == true) //seems to be false
@@ -671,13 +668,13 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 				break;
 			}
 
-			//Moving up and down (for the time being), this will become jumping and ducking in the future
-			else if (event.type == SDL_KEYDOWN)
+			//Moving up and down / jumping and ducking 
+			else if (event.type == SDL_KEYDOWN) //Checking for the key being pressed down
 			{
 
 				switch (event.key.keysym.sym)
 				{
-				case SDLK_UP:
+				case SDLK_UP: //UP Arrow Key
 					//up/jump action 
 					Player_yvel -= 100;
 					if (Player.y < limitjump) //Limits the players jump height to the value specified in the variable of limitjump
@@ -687,7 +684,7 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 					}
 					break;
 
-				case SDLK_DOWN:
+				case SDLK_DOWN: //DOWN Arrow Key
 					//down/duck action
 					Player_yvel += 100;
 					if (Player.y > limitduck) //Same as above but for ducking to thr value specified in limitduck
@@ -711,9 +708,6 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 				SDL_RenderFillRect(render, &Floor);
 				SDL_SetRenderDrawColor(render, 250, 213, 165, 255);
 				SDL_RenderFillRect(render, &Floor2);
-				//Player ... 
-				//SDL_SetRenderDrawColor(render, 255, 255, 0, 255);
-				//SDL_RenderFillRect(render, &Player);
 				SDL_RenderPresent(render);
 				if (obstacle1_active == true)
 				{
@@ -744,12 +738,12 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 
 			}
 
-			else if (event.type == SDL_KEYUP)
+			else if (event.type == SDL_KEYUP)//Checking for the key being released
 			{
 				switch (event.key.keysym.sym)
 				{
-				case SDLK_UP:
-					//up/jump" action; 
+				case SDLK_UP: //UP Arrow Key
+					//up/jump action; 
 					if (jump == false)
 					{
 						Player_yvel += 100;
@@ -758,8 +752,8 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 					jump = false;
 					break;
 
-				case SDLK_DOWN:
-					//cout << "down/duck" << endl;
+				case SDLK_DOWN: //DOWN Arrow Key
+					//down/duck action
 					if (duck == false)
 					{
 						Player_yvel -= 100;
