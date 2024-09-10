@@ -34,8 +34,6 @@ bool checkCollision(SDL_Rect a, SDL_Rect b);
 
 int main(int argc, char* argv[])
 {
-	//ofstream MyFile("HighScore.txt");
-	//MyFile.close();
 	main_menu();
 	return 0;
 }
@@ -173,7 +171,6 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 	bool duck = false;
 	//Player Phase
 	int phase = 1; 
-	//Temp Values
 	int speedchange = 2100;
 
 	//Images
@@ -487,6 +484,7 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 
 			SDL_RenderPresent(render);
 			phase += 1;
+			//Obstacles 
 			if (obstacle1_active == true)
 			{
 				SDL_RenderCopy(render, groundobst, NULL, &obs);
@@ -507,10 +505,13 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 				SDL_RenderCopy(render, airobst2, NULL, &obs4);
 				SDL_RenderPresent(render);
 			}
+			//Score Text
 			text(Black, render, 0, 0, "Score:");
+			//Score Value
 			stringstream updatedscore;
 			updatedscore << score;
 			text(Black, render, 100, 0, updatedscore.str().c_str());
+
 			SDL_RenderPresent(render);
 			SDL_RenderClear(render);
 			
@@ -590,7 +591,6 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 			SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
 			SDL_RenderClear(render);
 			SDL_RenderPresent(render);
-			//
 			SDL_RenderCopy(render, backgroundt, NULL, &Background);
 			SDL_RenderCopy(render, background2t, NULL, &Background2);
 			SDL_SetRenderDrawColor(render, 250, 213, 165, 255);
@@ -636,7 +636,7 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 		bool collision2 = checkCollision(Player, obs2); //Obstacle 2
 		bool collision3 = checkCollision(Player, obs3); //Obstacle 3
 		bool collision4 = checkCollision(Player, obs4); //Obstacle 4
-		if ((collision1 == true) || (collision2 == true) || (collision3 == true) || (collision4 == true))
+		if ((collision1 == true) || (collision2 == true) || (collision3 == true) || (collision4 == true)) //If any collision is true
 		{
 			//Game Over condition (when the player makes contact with ANY obstacle)
 			played_game = true;
@@ -649,14 +649,14 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 				accessfile << score;
 				accessfile.close();
 
-				//Destroys the current screen
+				//Destroys the current screen which the game is being played on.
 				SDL_DestroyWindow(window);
 				TTF_Quit();
 				SDL_Quit();
 				active = false; 
-				//Creates a new one from the main menu
+				//Creates a new one with the main menu being presented with the players score being presented. 
 				main_menu();
-				//Reduces count by 1, so the loop doesnt occur again
+				//Reduces count by 1, so the loop doesnt occur again.
 				count = count - 1;
 				break;
 			}
@@ -685,7 +685,6 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 						Player_yvel = 0;
 						jump = true;
 					}
-
 					break;
 
 				case SDLK_DOWN:
@@ -699,13 +698,13 @@ void PlayGame(SDL_Renderer* render, SDL_Window* window)
 					break;
 
 				}
+				//Update Player X and Y position by the corrosponding X and Y velocities. 
 				Player.y += Player_yvel;
 				Player.x += Player_xvel;
 				//Re-Drawing everything again here, for jumps and ducking
 				SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
 				SDL_RenderClear(render);
 				SDL_RenderPresent(render);
-				//
 				SDL_RenderCopy(render, backgroundt, NULL, &Background);
 				SDL_RenderCopy(render, background2t, NULL, &Background2);
 				SDL_SetRenderDrawColor(render, 250, 213, 165, 255);

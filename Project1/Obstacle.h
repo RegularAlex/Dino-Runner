@@ -8,8 +8,4 @@ public:
 	int obstacle_y(int type);
 	int obstacle_width(int type);
 	int obstacle_height(int type);
-	//void create(int type);
-	//void draw(int type, SDL_Renderer* render);
-	//void move(); 
-
 };
